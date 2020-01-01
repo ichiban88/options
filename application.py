@@ -1,16 +1,24 @@
-
-
-                
+from flask import Flask
+from flask import request
 import json
+import logging
+import time
 import base64
 import requests
 # Required package requests: `pip install requests`
 
-client_id = "your_client_id"
-client_secret = "your_client_secret"
+#client_id = "your_client_id"
+#client_secret = "your_client_secret"
 
 identity_url = "https://sandbox.livevol.com/id/connect/token"
 
+app = Flask(__name__)
+
+@app.route('/connect', methods=['POST'])
+def connect_client():
+data = request.json()
+client_id = data['api_key']
+client_secret = data['secret_key']
 encoded = base64.b64encode((client_id + ':' + client_secret).encode())
 headers = {"Authorization": "Basic " + encoded.decode('ascii')}
 payload = {"grant_type": "client_credentials"}
@@ -27,7 +35,11 @@ if token_data.status_code == 200:
         print(result.json())
 else:
     print("Authentications failed")
+
+return json.dumps({'result': 'success'})
             
-            
+
+if __name__ == '__main__':
+    app.run()           
 
 
