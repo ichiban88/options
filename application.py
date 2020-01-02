@@ -36,10 +36,12 @@ if token_data.status_code == 200:
 else:
     print("Authentications failed")
 
-return json.dumps({'result': 'success'})
+# return json.dumps({'result': 'success'})
+return result.json()
             
 
 if __name__ == '__main__':
-    app.run()           
+    app.run(host="0.0.0.0", port=80)
+       
 
 
